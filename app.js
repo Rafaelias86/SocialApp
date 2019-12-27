@@ -3,6 +3,9 @@ const app = express()
 const session =require("express-session")
 const MongoStore = require("connect-mongo")(session)
 const flash = require("connect-flash")
+
+
+
 const router = require("./router")
 
 let sessionOptions = session({
@@ -20,6 +23,11 @@ app.use(express.json())
 app.use(express.static(__dirname + "/public"))
 app.set("views", "views")
 app.set("view engine", "ejs")
+app.use(function(req, res, next){
+    res.locals.user = req.session.user;
+    next()
+})
 app.use("/", router)
+
 
 module.exports = app
